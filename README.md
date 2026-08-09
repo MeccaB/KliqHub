@@ -32,4 +32,6 @@ This keeps the app fast and keeps free-tier API usage low even under real traffi
 
 ## Status
 
-Early build — live at [kliqhub.com](https://kliqhub.com).
+Early build — live at [kliqhub.com](https://kliqhub.com)
+
+[Watch Our YouTube Channel, Your Shield Against Online Threats](https://youtube.com)
