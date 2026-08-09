@@ -1,10 +1,10 @@
-# Kliqhub
+# ✨ Kliqhub 
 <p align="center">
   <img src="KH Logo (1).png" alt="Kliqhub logo" width="440" />
 </p>
 **A free trust-layer scanner.** Drop in an email, domain, phone number, or image, and Kliqhub returns a 0–100 Trust Score built from real security signal, not guesswork.
 
-## What it does
+## 🔎 What it does
 
 Kliqhub checks what you give it against live threat intelligence and tells you how much to trust it:
 
@@ -15,7 +15,7 @@ Kliqhub checks what you give it against live threat intelligence and tells you h
 
 Every score is built with a transparent point-deduction engine — no black box, just a running list of exactly what raised or lowered the score.
 
-## How it works
+## 🤖 How it works 
 
 1. You submit a value.
 2. Kliqhub checks Supabase first — if this exact value was scanned recently, you get an instant cached result.
@@ -23,15 +23,34 @@ Every score is built with a transparent point-deduction engine — no black box,
 
 This keeps the app fast and keeps free-tier API usage low even under real traffic.
 
-## Tech stack
+## 💼 Tech stack 
 
 - **Next.js 14** (App Router) + TypeScript
 - **Tailwind CSS** for styling
 - **Supabase** for caching
 - **VirusTotal API** and **Have I Been Pwned API** for security intelligence
 
-## Status
+## 🟢 Status
 
-Early build — live at [kliqhub.com](https://kliqhub.com)
+🚀[Early build — live HERE](https://kliq-hub.vercel.app/)
 
 [Watch Our YouTube Channel, Your Shield Against Online Threats](https://youtube.com)
+
+## 🛠️ Installation & Setup
+
+Follow these steps to run the project locally:
+
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com
+    cd kliqhub
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Run the development server**
+    ```bash
+    npm run dev
