@@ -1,4 +1,9 @@
 import type { Metadata } from 'next';
+import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google';
+
+const displayFont = Space_Grotesk({ subsets: ['latin'], weight: ['500', '600', '700'] });
+const bodyFont = Inter({ subsets: ['latin'], weight: ['400', '500', '600'] });
+const monoFont = JetBrains_Mono({ subsets: ['latin'], weight: ['400', '500', '600'] });
 
 export const metadata: Metadata = {
   title: 'About — Kliqhub',
@@ -17,7 +22,7 @@ const BENEFIT_ROWS: BenefitRow[] = [
   },
   {
     benefit: 'Real Security Signal, Not Guesswork',
-    impact: 'Built on VirusTotal web security vendor network, Have I Been Pwned breach database, and Google Vision web-matching, so every score traces back to a verifiable source.',
+    impact: 'Built on VirusTotal\u2019s security vendor network, Have I Been Pwned\u2019s breach database, and Google Vision\u2019s web-matching, so every score traces back to a verifiable source.',
   },
   {
     benefit: 'Transparent Point-Deduction Engine',
@@ -35,52 +40,80 @@ const BENEFIT_ROWS: BenefitRow[] = [
 
 export default function AboutPage() {
   return (
-    <main style={{ background: '#0B0F14', color: '#E6EDF3', minHeight: '100vh', width: '100%', fontFamily: 'ui-sans-serif, system-ui, sans-serif' }}>
-      <div style={{ maxWidth: '48rem', margin: '0 auto', padding: '4rem 1.5rem' }}>
-        <a href="/" style={{ fontSize: '0.8rem', color: '#8B98A5', textDecoration: 'none' }}>
+    <main className={`${bodyFont.className} min-h-screen w-full`} style={{ background: '#0B0F14', color: '#E6EDF3' }}>
+      <div
+        className="pointer-events-none fixed inset-0 opacity-[0.06]"
+        style={{
+          backgroundImage:
+            'linear-gradient(#232D3A 1px, transparent 1px), linear-gradient(90deg, #232D3A 1px, transparent 1px)',
+          backgroundSize: '48px 48px',
+        }}
+      />
+
+      <div className="relative mx-auto flex max-w-3xl flex-col px-6 pb-24 pt-16 sm:pt-24">
+        
+          href="/"
+          className={monoFont.className}
+          style={{ fontSize: '0.78rem', color: '#8B98A5', marginBottom: '2.5rem', textDecoration: 'none' }}
+        >
           ← Back to the trust scanner
         </a>
 
-        <div style={{ marginTop: '1.5rem', marginBottom: '1rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', border: '1px solid #232D3A', borderRadius: '999px', padding: '0.25rem 0.75rem' }}>
-          <span style={{ height: '6px', width: '6px', borderRadius: '999px', background: '#22D3EE' }} />
-          <span style={{ fontSize: '0.7rem', letterSpacing: '0.12em', color: '#8B98A5' }}>TRUST INTELLIGENCE APIS</span>
+        <div className="mb-4 flex w-fit items-center gap-2 rounded-full border px-3 py-1" style={{ borderColor: '#232D3A' }}>
+          <span className="h-1.5 w-1.5 rounded-full" style={{ background: '#22D3EE', boxShadow: '0 0 8px #22D3EE' }} />
+          <span className={monoFont.className} style={{ fontSize: '0.72rem', letterSpacing: '0.12em', color: '#8B98A5' }}>
+            TRUST INTELLIGENCE APIS
+          </span>
         </div>
 
-        <h1 style={{ fontSize: '2.3rem', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.15, margin: 0 }}>
+        <h1 className={displayFont.className} style={{ fontSize: '2.4rem', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.15 }}>
           Verify Faster, Risk Less, Scale Safely
         </h1>
 
-        <p style={{ fontSize: '1.1rem', fontWeight: 500, color: '#22D3EE', marginTop: '1rem' }}>
+        <p className={displayFont.className} style={{ fontSize: '1.15rem', fontWeight: 500, color: '#22D3EE', marginTop: '1rem' }}>
           The trust layer for fintech, email service providers, and digital marketplaces.
         </p>
 
         <p style={{ fontSize: '1rem', color: '#8B98A5', marginTop: '1.5rem', lineHeight: 1.7, maxWidth: '38rem' }}>
           In a world of synthetic IDs, cross-border fraud, and web3 rug pulls, trust is the new infrastructure.
           Kliqhub delivers real-time trust intelligence via a simple REST API, so your platform can check users,
-          catch scams, and stop fraud before it hits your bottom line. No rip-and-replace. Plug in trust where
-          you already onboard, verify, or transact.
+          catch scams, and stop fraud before it hits your P&amp;L. No rip-and-replace. Plug in trust where you
+          already onboard, verify, or transact.
         </p>
 
-        <h2 style={{ fontSize: '1.3rem', fontWeight: 600, marginTop: '3.5rem', marginBottom: '1.5rem' }}>
-          Why businesses choose Kliqhub
-        </h2>
+        <div className="mt-14">
+          <h2 className={displayFont.className} style={{ fontSize: '1.3rem', fontWeight: 600, marginBottom: '1.5rem' }}>
+            Why businesses choose Kliqhub
+          </h2>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-          {BENEFIT_ROWS.map((row) => (
-            <div key={row.benefit} style={{ border: '1px solid #232D3A', borderRadius: '0.75rem', padding: '1.25rem', background: '#121820' }}>
-              <p style={{ fontSize: '0.95rem', fontWeight: 600, color: '#E6EDF3', margin: 0 }}>{row.benefit}</p>
-              <p style={{ fontSize: '0.85rem', color: '#8B98A5', marginTop: '0.4rem', lineHeight: 1.6 }}>{row.impact}</p>
-            </div>
-          ))}
+          <div className="flex flex-col gap-3">
+            {BENEFIT_ROWS.map((row) => (
+              <div
+                key={row.benefit}
+                className="rounded-xl border p-5"
+                style={{ borderColor: '#232D3A', background: 'linear-gradient(180deg, #121820 0%, #0F141B 100%)' }}
+              >
+                <p style={{ fontSize: '0.95rem', fontWeight: 600, color: '#E6EDF3' }}>{row.benefit}</p>
+                <p style={{ fontSize: '0.85rem', color: '#8B98A5', marginTop: '0.4rem', lineHeight: 1.6 }}>{row.impact}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div style={{ marginTop: '3.5rem', border: '1px solid #232D3A', borderRadius: '1rem', padding: '2rem', textAlign: 'center', background: '#121820' }}>
-          <h2 style={{ fontSize: '1.15rem', fontWeight: 600, margin: 0 }}>Building with Kliqhub</h2>
+        <div
+          className="mt-14 rounded-2xl border p-8 text-center"
+          style={{ borderColor: '#232D3A', background: 'linear-gradient(180deg, #121820 0%, #0F141B 100%)' }}
+        >
+          <h2 className={displayFont.className} style={{ fontSize: '1.2rem', fontWeight: 600 }}>
+            Building with Kliqhub
+          </h2>
           <p style={{ fontSize: '0.9rem', color: '#8B98A5', marginTop: '0.6rem', maxWidth: '30rem', marginLeft: 'auto', marginRight: 'auto' }}>
-            For platform, fintech, and marketplace integrations, reach out and we&apos;ll walk through your use case.
+            For platform, fintech, and marketplace integrations, reach out and we&apos;ll walk through your use
+            case.
           </p>
           
             href="mailto:hello@kliqhub.com"
+            className={displayFont.className}
             style={{
               display: 'inline-block',
               marginTop: '1.25rem',
@@ -92,3 +125,11 @@ export default function AboutPage() {
               borderRadius: '0.75rem',
               textDecoration: 'none',
             }}
+          >
+            Get in touch
+          </a>
+        </div>
+      </div>
+    </main>
+  );
+}
