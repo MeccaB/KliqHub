@@ -1,12 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google';
-
-const displayFont = Space_Grotesk({ subsets: ['latin'], weight: ['500', '600', '700'] });
-const bodyFont = Inter({ subsets: ['latin'], weight: ['400', '500', '600'] });
-const monoFont = JetBrains_Mono({ subsets: ['latin'], weight: ['400', '500', '600'] });
-
 type TabType = 'email' | 'domain' | 'phone' | 'image';
 type FlagSeverity = 'positive' | 'warning' | 'critical';
 
@@ -39,7 +33,7 @@ const SCORE_BANDS: ScoreBand[] = [
   { min: 30, max: 49, color: '#FB923C', glow: 'rgba(251,146,60,0.35)', label: 'Poor' },
   { min: 50, max: 69, color: '#F5C044', glow: 'rgba(245,192,68,0.35)', label: 'Fair' },
   { min: 70, max: 89, color: '#34D399', glow: 'rgba(52,211,153,0.35)', label: 'Good' },
-  { min: 90, max: 100, color: '#22D3EE', glow: 'rgba(34,211,238,0.35)', label: 'Excellent' },
+  { min: 90, max: 100, color: '#1F51FF', glow: 'rgba(34,211,238,0.35)', label: 'Excellent' },
 ];
 
 const GAUGE_START_ANGLE = -120;
@@ -247,15 +241,15 @@ function TrustGauge({ score }: { score: number }) {
         <g style={{ transform: `rotate(${needleAngle}deg)`, transformOrigin: `${center}px ${center}px`, transition: 'transform 1.1s cubic-bezier(0.16, 1, 0.3, 1)' }}>
           <line x1={center} y1={center} x2={center} y2={center - outerRadius + 22} stroke={band.color} strokeWidth={3} strokeLinecap="round" filter="url(#needle-glow)" />
         </g>
-        <circle cx={center} cy={center} r={7} fill="#0B0F14" stroke={band.color} strokeWidth={2.5} />
+        <circle cx={center} cy={center} r={7} fill="#000000" stroke={band.color} strokeWidth={2.5} />
       </svg>
 
       <div className="absolute top-[58%] flex flex-col items-center">
-        <span className={monoFont.className} style={{ fontSize: '2.75rem', fontWeight: 600, color: band.color, letterSpacing: '-0.02em' }}>
+        <span className={'font-mono'} style={{ fontSize: '2.75rem', fontWeight: 600, color: band.color, letterSpacing: '-0.02em' }}>
           {Math.round(animatedScore)}
         </span>
         <span
-          className={displayFont.className}
+          className={'font-display'}
           style={{ fontSize: '0.85rem', fontWeight: 600, color: band.color, textTransform: 'uppercase', letterSpacing: '0.14em' }}
         >
           {band.label}
@@ -396,18 +390,19 @@ export default function Home() {
   const activeTabConfig = TABS.find((tab) => tab.id === activeTab) ?? TABS[0];
 
   return (
-    <main className={`${bodyFont.className} min-h-screen w-full`} style={{ background: '#0B0F14', color: '#E6EDF3' }}>
+    <main className={'font-body min-h-screen w-full'} style={{ background: '#000000', color: '#E6EDF3' }}>
       <div className="pointer-events-none fixed inset-0 opacity-[0.06]" style={gridBackgroundStyle} />
 
       <div className="relative mx-auto flex max-w-3xl flex-col items-center px-6 pb-24 pt-16 sm:pt-24">
         <div className="mb-12 flex flex-col items-center text-center">
+          <img src="/logo.png" alt="Kliqhub logo" style={{ width: '72px', height: '72px', borderRadius: '16px', marginBottom: '1.25rem' }} />
           <div className="mb-4 flex items-center gap-2 rounded-full border px-3 py-1" style={{ borderColor: '#232D3A' }}>
-            <span className="h-1.5 w-1.5 rounded-full" style={{ background: '#22D3EE', boxShadow: '0 0 8px #22D3EE' }} />
-            <span className={monoFont.className} style={{ fontSize: '0.72rem', letterSpacing: '0.12em', color: '#8B98A5' }}>
+            <span className="h-1.5 w-1.5 rounded-full" style={{ background: '#1F51FF', boxShadow: '0 0 8px #1F51FF' }} />
+            <span className={'font-mono'} style={{ fontSize: '0.72rem', letterSpacing: '0.12em', color: '#8B98A5' }}>
               TRUST LAYER · LIVE SCANNER
             </span>
           </div>
-          <h1 className={displayFont.className} style={{ fontSize: '2.6rem', fontWeight: 700, letterSpacing: '-0.02em' }}>
+          <h1 className={'font-display'} style={{ fontSize: '2.6rem', fontWeight: 700, letterSpacing: '-0.02em' }}>
             Kliqhub
           </h1>
           <p className="mt-3 max-w-md" style={{ color: '#8B98A5', fontSize: '0.98rem' }}>
@@ -418,9 +413,9 @@ export default function Home() {
 
         <div
           className="w-full rounded-2xl border p-2"
-          style={{ borderColor: '#232D3A', background: 'linear-gradient(180deg, #121820 0%, #0F141B 100%)' }}
+          style={{ borderColor: '#232D3A', background: 'linear-gradient(180deg, #0A0A0F 0%, #050507 100%)' }}
         >
-          <div className="flex gap-1 rounded-xl p-1" style={{ background: '#0B0F14' }}>
+          <div className="flex gap-1 rounded-xl p-1" style={{ background: '#000000' }}>
             {TABS.map((tab) => {
               const Icon = tab.icon;
               const isActive = tab.id === activeTab;
@@ -431,7 +426,7 @@ export default function Home() {
                   className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 transition-all duration-200"
                   style={{
                     background: isActive ? '#1A222C' : 'transparent',
-                    color: isActive ? '#22D3EE' : '#8B98A5',
+                    color: isActive ? '#1F51FF' : '#8B98A5',
                     boxShadow: isActive ? 'inset 0 0 0 1px #2A3644' : 'none',
                   }}
                 >
@@ -452,14 +447,14 @@ export default function Home() {
                     if (event.key === 'Enter') handleSubmit();
                   }}
                   placeholder={activeTabConfig.placeholder}
-                  className={`${monoFont.className} w-full rounded-xl border bg-transparent px-4 py-3.5 outline-none transition-colors focus:border-cyan-400`}
+                  className="font-mono w-full rounded-xl border bg-transparent px-4 py-3.5 outline-none transition-colors focus:border-cyan-400"
                   style={{ borderColor: '#232D3A', fontSize: '0.95rem' }}
                 />
                 <button
                   onClick={handleSubmit}
                   disabled={!canSubmit || isScanning}
                   className="shrink-0 rounded-xl px-6 py-3.5 font-medium transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40"
-                  style={{ background: '#22D3EE', color: '#0B0F14' }}
+                  style={{ background: '#1F51FF', color: '#000000' }}
                 >
                   {isScanning ? 'Scanning…' : 'Run Scan'}
                 </button>
@@ -476,7 +471,7 @@ export default function Home() {
                   onClick={() => fileInputRef.current?.click()}
                   className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border border-dashed px-6 py-10 text-center transition-colors duration-200"
                   style={{
-                    borderColor: isDraggingOver ? '#22D3EE' : '#232D3A',
+                    borderColor: isDraggingOver ? '#1F51FF' : '#232D3A',
                     background: isDraggingOver ? 'rgba(34,211,238,0.05)' : 'transparent',
                   }}
                 >
@@ -499,15 +494,15 @@ export default function Home() {
                 {(isHashing || imageHash) && (
                   <div className="flex items-center justify-between rounded-lg border px-4 py-3" style={{ borderColor: '#232D3A' }}>
                     <div className="flex items-center gap-2 overflow-hidden">
-                      <span className={monoFont.className} style={{ fontSize: '0.75rem', color: '#8B98A5', whiteSpace: 'nowrap' }}>
+                      <span className={'font-mono'} style={{ fontSize: '0.75rem', color: '#8B98A5', whiteSpace: 'nowrap' }}>
                         SHA-256
                       </span>
-                      <span className={monoFont.className} style={{ fontSize: '0.78rem', color: '#E6EDF3', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <span className={'font-mono'} style={{ fontSize: '0.78rem', color: '#E6EDF3', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {isHashing ? 'computing hash…' : imageHash}
                       </span>
                     </div>
                     {imageHash && !isHashing && (
-                      <button onClick={handleCopyHash} className="shrink-0 pl-3" style={{ color: '#22D3EE', fontSize: '0.75rem' }}>
+                      <button onClick={handleCopyHash} className="shrink-0 pl-3" style={{ color: '#1F51FF', fontSize: '0.75rem' }}>
                         {copied ? 'Copied' : 'Copy'}
                       </button>
                     )}
@@ -518,7 +513,7 @@ export default function Home() {
                   onClick={handleSubmit}
                   disabled={!canSubmit || isScanning}
                   className="rounded-xl px-6 py-3.5 font-medium transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40"
-                  style={{ background: '#22D3EE', color: '#0B0F14' }}
+                  style={{ background: '#1F51FF', color: '#000000' }}
                 >
                   {isScanning ? 'Scanning…' : 'Run Scan'}
                 </button>
@@ -528,7 +523,7 @@ export default function Home() {
 
           {isScanning && (
             <div className="relative mx-5 mb-5 h-1 overflow-hidden rounded-full" style={{ background: '#1A222C' }}>
-              <div className="scan-sweep absolute inset-y-0 w-1/3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #22D3EE, transparent)' }} />
+              <div className="scan-sweep absolute inset-y-0 w-1/3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #1F51FF, transparent)' }} />
             </div>
           )}
         </div>
@@ -540,15 +535,15 @@ export default function Home() {
         )}
 
         {result && (
-          <div className="fade-in-up mt-10 w-full rounded-2xl border p-8" style={{ borderColor: '#232D3A', background: 'linear-gradient(180deg, #121820 0%, #0F141B 100%)' }}>
+          <div className="fade-in-up mt-10 w-full rounded-2xl border p-8" style={{ borderColor: '#232D3A', background: 'linear-gradient(180deg, #0A0A0F 0%, #050507 100%)' }}>
             <div className="flex flex-col items-center">
               <TrustGauge score={result.score} />
               <div className="mt-2 flex items-center gap-2">
-                <span className={monoFont.className} style={{ fontSize: '0.82rem', color: '#8B98A5' }}>
+                <span className={'font-mono'} style={{ fontSize: '0.82rem', color: '#8B98A5' }}>
                   {result.type.toUpperCase()}
                 </span>
                 <span style={{ color: '#3A4756' }}>·</span>
-                <span className={monoFont.className} style={{ fontSize: '0.82rem', color: '#E6EDF3' }}>
+                <span className={'font-mono'} style={{ fontSize: '0.82rem', color: '#E6EDF3' }}>
                   {result.value}
                 </span>
               </div>
@@ -580,6 +575,14 @@ export default function Home() {
             </div>
           </div>
         )}
+
+        
+          href="/about"
+          className="font-mono"
+          style={{ marginTop: '3.5rem', fontSize: '0.78rem', color: '#8B98A5', textDecoration: 'none' }}
+        >
+          About Kliqhub
+        </a>
       </div>
 
       <style jsx>{`
