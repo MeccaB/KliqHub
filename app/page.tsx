@@ -180,4 +180,446 @@ const TABS: { id: TabType; label: string; icon: (props: { className?: string }) 
 ];
 
 function TrustGauge({ score }: { score: number }) {
-  const [animatedScore, setAnimatedScore] =
+  const [animatedScore, setAnimatedScore] = useState(0);
+
+  useEffect(() => {
+    setAnimatedScore(0);
+    const timeout = setTimeout(() => setAnimatedScore(score), 80);
+    return () => clearTimeout(timeout);
+  }, [score]);
+
+  const size = 260;
+  const center = size / 2;
+  const outerRadius = 108;
+  const tickRadius = 96;
+  const band = getBandForScore(score);
+  const needleAngle = scoreToAngle(animatedScore);
+
+  const ticks = Array.from({ length: 11 }, (_, index) => {
+    const tickScore = index * 10;
+    const angle = scoreToAngle(tickScore);
+    const inner = polarToCartesian(center, center, tickRadius - 8, angle);
+    const outer = polarToCartesian(center, center, tickRadius + 2, angle);
+    return { tickScore, inner, outer, angle };
+  });
+
+  return (
+    <div className="relative flex flex-col items-center">
+      <svg width={size} height={size * 0.78} viewBox={`0 0 ${size} ${size * 0.78 + 10}`}>
+        <defs>
+          <filter id="needle-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        {SCORE_BANDS.map((segment) => {
+          const startAngle = scoreToAngle(segment.min);
+          const endAngle = scoreToAngle(Math.min(segment.max + 1, 100));
+          return (
+            <path
+              key={segment.label}
+              d={describeArc(center, center, outerRadius, startAngle, endAngle)}
+              stroke={segment.color}
+              strokeWidth={10}
+              strokeLinecap="butt"
+              fill="none"
+              opacity={0.85}
+            />
+          );
+        })}
+
+        {ticks.map((tick) => (
+          <line
+            key={tick.tickScore}
+            x1={tick.inner.x}
+            y1={tick.inner.y}
+            x2={tick.outer.x}
+            y2={tick.outer.y}
+            stroke="#3A4756"
+            strokeWidth={tick.tickScore % 50 === 0 ? 2 : 1}
+          />
+        ))}
+
+        <g style={{ transform: `rotate(${needleAngle}deg)`, transformOrigin: `${center}px ${center}px`, transition: 'transform 1.1s cubic-bezier(0.16, 1, 0.3, 1)' }}>
+          <line x1={center} y1={center} x2={center} y2={center - outerRadius + 22} stroke={band.color} strokeWidth={3} strokeLinecap="round" filter="url(#needle-glow)" />
+        </g>
+        <circle cx={center} cy={center} r={7} fill="#0B0F14" stroke={band.color} strokeWidth={2.5} />
+      </svg>
+
+      <div className="absolute top-[58%] flex flex-col items-center">
+        <span className={monoFont.className} style={{ fontSize: '2.75rem', fontWeight: 600, color: band.color, letterSpacing: '-0.02em' }}>
+          {Math.round(animatedScore)}
+        </span>
+        <span
+          className={displayFont.className}
+          style={{ fontSize: '0.85rem', fontWeight: 600, color: band.color, textTransform: 'uppercase', letterSpacing: '0.14em' }}
+        >
+          {band.label}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+export default function Home() {
+  const [activeTab, setActiveTab] = useState<TabType>('email');
+  const [inputValue, setInputValue] = useState('');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [imageHash, setImageHash] = useState<string | null>(null);
+  const [isHashing, setIsHashing] = useState(false);
+  const [isDraggingOver, setIsDraggingOver] = useState(false);
+  const [isScanning, setIsScanning] = useState(false);
+  const [result, setResult] = useState<TrustResult | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    return () => {
+      if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
+    };
+  }, [imagePreviewUrl]);
+
+  const resetForNewTab = useCallback((tab: TabType) => {
+    setActiveTab(tab);
+    setInputValue('');
+    setSelectedFile(null);
+    setImagePreviewUrl((previous) => {
+      if (previous) URL.revokeObjectURL(previous);
+      return null;
+    });
+    setImageHash(null);
+    setResult(null);
+    setErrorMessage(null);
+  }, []);
+
+  const processFile = useCallback(async (file: File) => {
+    setSelectedFile(file);
+    setResult(null);
+    setErrorMessage(null);
+    setImagePreviewUrl((previous) => {
+      if (previous) URL.revokeObjectURL(previous);
+      return URL.createObjectURL(file);
+    });
+    setIsHashing(true);
+    try {
+      const hash = await hashFile(file);
+      setImageHash(hash);
+    } catch (error) {
+      console.error('Client-side hashing failed', error);
+      setErrorMessage('Could not read this file in your browser. Please try a different image.');
+    } finally {
+      setIsHashing(false);
+    }
+  }, []);
+
+  const handleFileInputChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (file) processFile(file);
+    },
+    [processFile]
+  );
+
+  const handleDrop = useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      setIsDraggingOver(false);
+      const file = event.dataTransfer.files?.[0];
+      if (file) processFile(file);
+    },
+    [processFile]
+  );
+
+  const handleCopyHash = useCallback(() => {
+    if (!imageHash) return;
+    navigator.clipboard.writeText(imageHash).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    });
+  }, [imageHash]);
+
+  const canSubmit =
+    activeTab === 'image' ? Boolean(imageHash) && !isHashing : inputValue.trim().length > 0;
+
+  const handleSubmit = useCallback(async () => {
+    if (!canSubmit || isScanning) return;
+    setIsScanning(true);
+    setResult(null);
+    setErrorMessage(null);
+
+    const minimumScanDelay = new Promise((resolve) => setTimeout(resolve, 1100));
+
+    try {
+      let response: Response;
+
+      if (activeTab === 'image' && selectedFile && imageHash) {
+        const formData = new FormData();
+        formData.append('type', 'image');
+        formData.append('file', selectedFile);
+        formData.append('hash', imageHash);
+        formData.append('fileName', selectedFile.name);
+        const fetchPromise = fetch('/api/check', { method: 'POST', body: formData });
+        const [fetchResult] = await Promise.all([fetchPromise, minimumScanDelay]);
+        response = fetchResult;
+      } else {
+        const fetchPromise = fetch('/api/check', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: activeTab, value: inputValue.trim() }),
+        });
+        const [fetchResult] = await Promise.all([fetchPromise, minimumScanDelay]);
+        response = fetchResult;
+      }
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErrorMessage(data?.error ?? 'Something went wrong while running this check.');
+        return;
+      }
+
+      setResult(data as TrustResult);
+    } catch (error) {
+      console.error('Trust check request failed', error);
+      setErrorMessage('Could not reach the Kliqhub scanning service. Please try again.');
+    } finally {
+      setIsScanning(false);
+    }
+  }, [activeTab, canSubmit, imageHash, inputValue, isScanning, selectedFile]);
+
+  const activeTabConfig = TABS.find((tab) => tab.id === activeTab) ?? TABS[0];
+
+  return (
+    <main className={`${bodyFont.className} min-h-screen w-full`} style={{ background: '#0B0F14', color: '#E6EDF3' }}>
+      <div className="pointer-events-none fixed inset-0 opacity-[0.06]" style={gridBackgroundStyle} />
+
+      <div className="relative mx-auto flex max-w-3xl flex-col items-center px-6 pb-24 pt-16 sm:pt-24">
+        <div className="mb-12 flex flex-col items-center text-center">
+          <div className="mb-4 flex items-center gap-2 rounded-full border px-3 py-1" style={{ borderColor: '#232D3A' }}>
+            <span className="h-1.5 w-1.5 rounded-full" style={{ background: '#22D3EE', boxShadow: '0 0 8px #22D3EE' }} />
+            <span className={monoFont.className} style={{ fontSize: '0.72rem', letterSpacing: '0.12em', color: '#8B98A5' }}>
+              TRUST LAYER · LIVE SCANNER
+            </span>
+          </div>
+          <h1 className={displayFont.className} style={{ fontSize: '2.6rem', fontWeight: 700, letterSpacing: '-0.02em' }}>
+            Kliqhub
+          </h1>
+          <p className="mt-3 max-w-md" style={{ color: '#8B98A5', fontSize: '0.98rem' }}>
+            Point a free trust engine at anything, an email, a domain, a phone number, an image, and get back a Trust
+            Score built from real security signal.
+          </p>
+        </div>
+
+        <div
+          className="w-full rounded-2xl border p-2"
+          style={{ borderColor: '#232D3A', background: 'linear-gradient(180deg, #121820 0%, #0F141B 100%)' }}
+        >
+          <div className="flex gap-1 rounded-xl p-1" style={{ background: '#0B0F14' }}>
+            {TABS.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = tab.id === activeTab;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => resetForNewTab(tab.id)}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 transition-all duration-200"
+                  style={{
+                    background: isActive ? '#1A222C' : 'transparent',
+                    color: isActive ? '#22D3EE' : '#8B98A5',
+                    boxShadow: isActive ? 'inset 0 0 0 1px #2A3644' : 'none',
+                  }}
+                >
+                  <Icon className="h-4 w-4" />
+                  <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="p-5">
+            {activeTab !== 'image' ? (
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <input
+                  value={inputValue}
+                  onChange={(event) => setInputValue(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') handleSubmit();
+                  }}
+                  placeholder={activeTabConfig.placeholder}
+                  className={`${monoFont.className} w-full rounded-xl border bg-transparent px-4 py-3.5 outline-none transition-colors focus:border-cyan-400`}
+                  style={{ borderColor: '#232D3A', fontSize: '0.95rem' }}
+                />
+                <button
+                  onClick={handleSubmit}
+                  disabled={!canSubmit || isScanning}
+                  className="shrink-0 rounded-xl px-6 py-3.5 font-medium transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40"
+                  style={{ background: '#22D3EE', color: '#0B0F14' }}
+                >
+                  {isScanning ? 'Scanning…' : 'Run Scan'}
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-4">
+                <div
+                  onDragOver={(event) => {
+                    event.preventDefault();
+                    setIsDraggingOver(true);
+                  }}
+                  onDragLeave={() => setIsDraggingOver(false)}
+                  onDrop={handleDrop}
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border border-dashed px-6 py-10 text-center transition-colors duration-200"
+                  style={{
+                    borderColor: isDraggingOver ? '#22D3EE' : '#232D3A',
+                    background: isDraggingOver ? 'rgba(34,211,238,0.05)' : 'transparent',
+                  }}
+                >
+                  <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileInputChange} className="hidden" />
+                  {imagePreviewUrl ? (
+                    <img src={imagePreviewUrl} alt="Selected preview" className="h-28 w-28 rounded-lg object-cover" style={{ boxShadow: '0 0 0 1px #232D3A' }} />
+                  ) : (
+                    <UploadIcon className="h-8 w-8" style={{ color: '#8B98A5' }} />
+                  )}
+                  <div>
+                    <p style={{ fontSize: '0.92rem', fontWeight: 500 }}>
+                      {selectedFile ? selectedFile.name : 'Drop an image here, or click to select one'}
+                    </p>
+                    <p style={{ fontSize: '0.78rem', color: '#8B98A5', marginTop: '0.25rem' }}>
+                      Hashed locally in your browser with SHA-256 before anything is sent
+                    </p>
+                  </div>
+                </div>
+
+                {(isHashing || imageHash) && (
+                  <div className="flex items-center justify-between rounded-lg border px-4 py-3" style={{ borderColor: '#232D3A' }}>
+                    <div className="flex items-center gap-2 overflow-hidden">
+                      <span className={monoFont.className} style={{ fontSize: '0.75rem', color: '#8B98A5', whiteSpace: 'nowrap' }}>
+                        SHA-256
+                      </span>
+                      <span className={monoFont.className} style={{ fontSize: '0.78rem', color: '#E6EDF3', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {isHashing ? 'computing hash…' : imageHash}
+                      </span>
+                    </div>
+                    {imageHash && !isHashing && (
+                      <button onClick={handleCopyHash} className="shrink-0 pl-3" style={{ color: '#22D3EE', fontSize: '0.75rem' }}>
+                        {copied ? 'Copied' : 'Copy'}
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                <button
+                  onClick={handleSubmit}
+                  disabled={!canSubmit || isScanning}
+                  className="rounded-xl px-6 py-3.5 font-medium transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40"
+                  style={{ background: '#22D3EE', color: '#0B0F14' }}
+                >
+                  {isScanning ? 'Scanning…' : 'Run Scan'}
+                </button>
+              </div>
+            )}
+          </div>
+
+          {isScanning && (
+            <div className="relative mx-5 mb-5 h-1 overflow-hidden rounded-full" style={{ background: '#1A222C' }}>
+              <div className="scan-sweep absolute inset-y-0 w-1/3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #22D3EE, transparent)' }} />
+            </div>
+          )}
+        </div>
+
+        {errorMessage && (
+          <div className="mt-6 w-full rounded-xl border px-4 py-3" style={{ borderColor: 'rgba(239,68,68,0.4)', background: 'rgba(239,68,68,0.08)' }}>
+            <p style={{ color: '#F87171', fontSize: '0.88rem' }}>{errorMessage}</p>
+          </div>
+        )}
+
+        {result && (
+          <div className="fade-in-up mt-10 w-full rounded-2xl border p-8" style={{ borderColor: '#232D3A', background: 'linear-gradient(180deg, #121820 0%, #0F141B 100%)' }}>
+            <div className="flex flex-col items-center">
+              <TrustGauge score={result.score} />
+              <div className="mt-2 flex items-center gap-2">
+                <span className={monoFont.className} style={{ fontSize: '0.82rem', color: '#8B98A5' }}>
+                  {result.type.toUpperCase()}
+                </span>
+                <span style={{ color: '#3A4756' }}>·</span>
+                <span className={monoFont.className} style={{ fontSize: '0.82rem', color: '#E6EDF3' }}>
+                  {result.value}
+                </span>
+              </div>
+              <div className="mt-1 flex items-center gap-1.5">
+                <span
+                  className="h-1.5 w-1.5 rounded-full"
+                  style={{ background: result.source === 'cache' ? '#F5C044' : '#34D399' }}
+                />
+                <span style={{ fontSize: '0.74rem', color: '#8B98A5' }}>
+                  {result.source === 'cache' ? 'Served from cache' : 'Fresh live scan'} · {new Date(result.checkedAt).toLocaleString()}
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-8 flex flex-col gap-3">
+              {result.flags.map((flag, index) => (
+                <div
+                  key={`${flag.label}-${index}`}
+                  className="flex items-start gap-3 rounded-xl border px-4 py-3.5"
+                  style={{ borderColor: '#232D3A' }}
+                >
+                  <FlagIcon severity={flag.severity} className="mt-0.5 h-4.5 w-4.5 shrink-0" />
+                  <div>
+                    <p style={{ fontSize: '0.88rem', fontWeight: 600, color: severityColor(flag.severity) }}>{flag.label}</p>
+                    <p style={{ fontSize: '0.82rem', color: '#8B98A5', marginTop: '0.2rem' }}>{flag.detail}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <style jsx>{`
+        .scan-sweep {
+          animation: sweep 1.1s ease-in-out infinite;
+        }
+        @keyframes sweep {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(300%);
+          }
+        }
+        .fade-in-up {
+          animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(12px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .scan-sweep,
+          .fade-in-up {
+            animation: none;
+          }
+        }
+      `}</style>
+    </main>
+  );
+}
+
+const gridBackgroundStyle: React.CSSProperties = {
+  backgroundImage:
+    'linear-gradient(#232D3A 1px, transparent 1px), linear-gradient(90deg, #232D3A 1px, transparent 1px)',
+  backgroundSize: '48px 48px',
+};
