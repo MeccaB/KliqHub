@@ -58,6 +58,22 @@ interface HibpPaste {
   EmailCount?: number;
 }
 
+interface GoogleVisionWebEntity {
+  url: string;
+}
+
+interface GoogleVisionPageMatch {
+  url: string;
+  pageTitle?: string;
+}
+
+interface GoogleVisionWebDetection {
+  fullMatchingImages?: GoogleVisionWebEntity[];
+  partialMatchingImages?: GoogleVisionWebEntity[];
+  pagesWithMatchingImages?: GoogleVisionPageMatch[];
+  visuallySimilarImages?: GoogleVisionWebEntity[];
+}
+
 interface CachedRow {
   id: string;
   input_type: CheckType;
@@ -193,6 +209,33 @@ async function fetchVirusTotalFile(hash: string): Promise<VirusTotalFileAttribut
     return (json?.data?.attributes as VirusTotalFileAttributes) ?? null;
   } catch (error) {
     console.error('VirusTotal file lookup failed', error);
+    return null;
+  }
+}
+
+async function fetchGoogleVisionWebDetection(imageBuffer: Buffer): Promise<GoogleVisionWebDetection | null> {
+  const apiKey = process.env.GOOGLE_CLOUD_VISION_API_KEY;
+  if (!apiKey) return null;
+  try {
+    const base64Content = imageBuffer.toString('base64');
+    const response = await fetch(`https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        requests: [
+          {
+            image: { content: base64Content },
+            features: [{ type: 'WEB_DETECTION', maxResults: 15 }],
+          },
+        ],
+      }),
+      cache: 'no-store',
+    });
+    if (!response.ok) return null;
+    const json = await response.json();
+    return (json?.responses?.[0]?.webDetection as GoogleVisionWebDetection) ?? null;
+  } catch (error) {
+    console.error('Google Vision web detection failed', error);
     return null;
   }
 }
@@ -408,7 +451,7 @@ function scorePhoneHeuristic(phone: string): ScoreResult {
   return { score: clampScore(score), flags };
 }
 
-function scoreImageFromVirusTotal(vt: VirusTotalFileAttributes | null): ScoreResult {
+function scoreImage(vt: VirusTotalFileAttributes | null, web: GoogleVisionWebDetection | null): ScoreResult {
   let score = 100;
   const flags: Flag[] = [];
 
@@ -423,43 +466,87 @@ function scoreImageFromVirusTotal(vt: VirusTotalFileAttributes | null): ScoreRes
       label: 'Hash-Only Lookup',
       detail: "The free tier only checks this file's SHA-256 fingerprint against prior submissions; the file itself is never uploaded.",
     });
-    return { score: clampScore(score - 5), flags };
+    score -= 5;
+  } else {
+    const stats = vt.last_analysis_stats ?? {};
+    const maliciousCount = stats.malicious ?? 0;
+    const suspiciousCount = stats.suspicious ?? 0;
+
+    if (maliciousCount > 0) {
+      score -= Math.min(70, maliciousCount * 12);
+      flags.push({
+        severity: 'critical',
+        label: `Detected as Malicious by ${maliciousCount} Engine${maliciousCount === 1 ? '' : 's'}`,
+        detail: 'This exact file matches signatures flagged as malicious by security vendors.',
+      });
+    }
+
+    if (suspiciousCount > 0) {
+      score -= Math.min(15, suspiciousCount * 4);
+      flags.push({
+        severity: 'warning',
+        label: `Flagged Suspicious by ${suspiciousCount} Engine${suspiciousCount === 1 ? '' : 's'}`,
+        detail: 'Some engines flagged this file as potentially suspicious.',
+      });
+    }
+
+    if (maliciousCount === 0 && suspiciousCount === 0) {
+      flags.push({
+        severity: 'positive',
+        label: 'Clean File History',
+        detail: 'No security vendor has flagged this exact file as malicious or suspicious.',
+      });
+    }
   }
 
-  const stats = vt.last_analysis_stats ?? {};
-  const maliciousCount = stats.malicious ?? 0;
-  const suspiciousCount = stats.suspicious ?? 0;
-
-  if (maliciousCount > 0) {
-    score -= Math.min(70, maliciousCount * 12);
-    flags.push({
-      severity: 'critical',
-      label: `Detected as Malicious by ${maliciousCount} Engine${maliciousCount === 1 ? '' : 's'}`,
-      detail: 'This exact file matches signatures flagged as malicious by security vendors.',
-    });
-  }
-
-  if (suspiciousCount > 0) {
-    score -= Math.min(15, suspiciousCount * 4);
+  if (web === null) {
     flags.push({
       severity: 'warning',
-      label: `Flagged Suspicious by ${suspiciousCount} Engine${suspiciousCount === 1 ? '' : 's'}`,
-      detail: 'Some engines flagged this file as potentially suspicious.',
+      label: 'Web Presence Check Unavailable',
+      detail: 'Cross-web image matching was not configured or could not be reached for this scan.',
     });
-  }
+  } else {
+    const fullMatches = web.fullMatchingImages ?? [];
+    const pages = web.pagesWithMatchingImages ?? [];
+    const distinctDomains = new Set(
+      pages.map((page) => {
+        try {
+          return new URL(page.url).hostname;
+        } catch {
+          return page.url;
+        }
+      })
+    );
 
-  if (maliciousCount === 0 && suspiciousCount === 0) {
-    flags.push({
-      severity: 'positive',
-      label: 'Clean File History',
-      detail: 'No security vendor has flagged this exact file as malicious or suspicious.',
-    });
+    if (fullMatches.length === 0) {
+      flags.push({
+        severity: 'positive',
+        label: 'No Matching Copies Found Elsewhere',
+        detail: 'This exact image does not appear to match any other images indexed by Google.',
+      });
+    } else if (distinctDomains.size <= 2) {
+      score -= 3;
+      flags.push({
+        severity: 'warning',
+        label: `Image Found on ${distinctDomains.size} Other Site${distinctDomains.size === 1 ? '' : 's'}`,
+        detail: `This image also appears at: ${Array.from(distinctDomains).slice(0, 3).join(', ')}. Worth a quick manual check that this matches the claimed identity or source.`,
+      });
+    } else {
+      score -= 12;
+      flags.push({
+        severity: 'warning',
+        label: `Image Widely Distributed Across ${distinctDomains.size} Sites`,
+        detail: `This image shows up across many unrelated sites (including ${Array.from(distinctDomains).slice(0, 3).join(', ')}), which can be a sign of a stolen or stock photo. This alone isn't proof of misuse, so it's worth reviewing manually.`,
+      });
+    }
   }
 
   return { score: clampScore(score), flags };
 }
 
-async function extractImageHash(request: NextRequest, formData: FormData): Promise<{ hash: string | null; fileName: string | null }> {
+async function extractImagePayload(
+  formData: FormData
+): Promise<{ hash: string | null; fileName: string | null; buffer: Buffer | null }> {
   const file = formData.get('file');
   const providedHash = formData.get('hash')?.toString() ?? null;
 
@@ -468,14 +555,14 @@ async function extractImageHash(request: NextRequest, formData: FormData): Promi
     const arrayBuffer = await typedFile.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
     const hash = crypto.createHash('sha256').update(buffer).digest('hex');
-    return { hash, fileName: typedFile.name ?? null };
+    return { hash, fileName: typedFile.name ?? null, buffer };
   }
 
   if (providedHash) {
-    return { hash: providedHash.toLowerCase(), fileName: formData.get('fileName')?.toString() ?? null };
+    return { hash: providedHash.toLowerCase(), fileName: formData.get('fileName')?.toString() ?? null, buffer: null };
   }
 
-  return { hash: null, fileName: null };
+  return { hash: null, fileName: null, buffer: null };
 }
 
 export async function POST(request: NextRequest) {
@@ -486,13 +573,15 @@ export async function POST(request: NextRequest) {
     let rawValue: string | null = null;
     let imageHash: string | null = null;
     let imageFileName: string | null = null;
+    let imageBuffer: Buffer | null = null;
 
     if (contentType.includes('multipart/form-data')) {
       const formData = await request.formData();
       type = formData.get('type')?.toString() ?? null;
-      const extracted = await extractImageHash(request, formData);
+      const extracted = await extractImagePayload(formData);
       imageHash = extracted.hash;
       imageFileName = extracted.fileName;
+      imageBuffer = extracted.buffer;
       rawValue = formData.get('value')?.toString() ?? null;
     } else {
       const body = await request.json();
@@ -533,9 +622,12 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      const vtFile = await fetchVirusTotalFile(cacheKey);
-      const { score, flags } = scoreImageFromVirusTotal(vtFile);
-      await saveCachedResult('image', cacheKey, score, flags, vtFile, 24 * 7);
+      const [vtFile, webDetection] = await Promise.all([
+        fetchVirusTotalFile(cacheKey),
+        imageBuffer ? fetchGoogleVisionWebDetection(imageBuffer) : Promise.resolve(null),
+      ]);
+      const { score, flags } = scoreImage(vtFile, webDetection);
+      await saveCachedResult('image', cacheKey, score, flags, { vtFile, webDetection }, 24 * 7);
 
       return NextResponse.json({
         type: 'image',
