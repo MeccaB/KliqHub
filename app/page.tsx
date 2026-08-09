@@ -577,10 +577,8 @@ export default function Home() {
         )}
 
         
-          href="/about"
-          className="font-mono"
-          style={{ marginTop: '3.5rem', fontSize: '0.78rem', color: '#8B98A5', textDecoration: 'none' }}
-        >
+                  <a href="/about" className="font-mono" style={{ marginTop: '3.5rem', fontSize: '0.78rem', color: '#8B98A5', textDecoration: 'none' }}>About Kliqhub</a>
+      </div>
           About Kliqhub
         </a>
       </div>
