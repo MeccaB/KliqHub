@@ -74,7 +74,7 @@ export default function BusinessPage() {
         </div>
 
         <div style={{ marginTop: '3.5rem', border: '1px solid #232D3A', borderRadius: '1rem', padding: '2rem', textAlign: 'center', background: '#0A0A0F' }}>
-          <h2 style={{ fontSize: '1.15rem', fontWeight: 600, margin: 0 }}>Building with Kliqhub</h2>
+          <h2 style={{ fontSize: '1.15rem', fontWeight: 600, margin: 0 }}>Building with KliqHub</h2>
           <p style={{ fontSize: '0.9rem', color: '#8B98A5', marginTop: '0.6rem', maxWidth: '30rem', marginLeft: 'auto', marginRight: 'auto' }}>
             For platform, fintech, and marketplace integrations, reach out and we&apos;ll walk through your use case.
           </p>
