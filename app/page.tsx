@@ -643,31 +643,18 @@ export default function Home() {
                   {result.value}
                 </span>
               </div>
-              <div className="mt-1 flex items-center gap-1.5">
-                <span
-                  className="h-1.5 w-1.5 rounded-full"
-                  style={{ background: result.source === 'cache' ? '#F5C044' : '#34D399' }}
-                />
-                <span style={{ fontSize: '0.74rem', color: '#8B98A5' }}>
-                  {result.source === 'cache' ? 'Served from cache' : 'Fresh live scan'} · {new Date(result.checkedAt).toLocaleString()}
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-8 flex flex-col gap-3">
-              {result.flags.map((flag, index) => (
-                <div
-                  key={`${flag.label}-${index}`}
-                  className="flex items-start gap-3 rounded-xl border px-4 py-3.5"
-                  style={{ borderColor: '#232D3A' }}
-                >
-                  <FlagIcon severity={flag.severity} className="mt-0.5 h-4.5 w-4.5 shrink-0" />
-                  <div>
-                    <p style={{ fontSize: '0.88rem', fontWeight: 600, color: severityColor(flag.severity) }}>{flag.label}</p>
-                    <p style={{ fontSize: '0.82rem', color: '#8B98A5', marginTop: '0.2rem' }}>{flag.detail}</p>
-                  </div>
-                </div>
-              ))}
+               <div className="mt-4 flex items-center gap-4">
+          <span className="font-mono" style={{ fontSize: '0.72rem', color: '#5A6472' }}>
+            © 2026 KliqHub
+          </span>
+          <a href="/about" className="font-mono" style={{ fontSize: '0.72rem', color: '#5A6472', textDecoration: 'none' }}>
+            About KliqHub
+          </a>
+          <a href="/shop" className="font-mono" style={{ fontSize: '0.72rem', color: '#5A6472', textDecoration: 'none' }}>
+            Shop
+          </a>
+        </div>
+      </div>
             </div>
           </div>
         )}
