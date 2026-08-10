@@ -4,9 +4,9 @@ import React, { useEffect } from 'react';
 
 export default function ShopRedirectPage() {
   useEffect(() => {
-    // Automatically forwards to your store after 3 seconds
     const redirectTimer = setTimeout(() => {
-      window.location.href = "https://etsy.com"; // <-- REPLACE WITH YOUR LIVE STORE URL
+      // FORWARD DESTINATION URL (Replace with your actual store link)
+      window.location.href = "https://etsy.com"; 
     }, 3000);
 
     return () => clearTimeout(redirectTimer);
@@ -24,15 +24,8 @@ export default function ShopRedirectPage() {
       fontFamily: 'sans-serif',
       overflow: 'hidden'
     }}>
-      <style>{`
-        @keyframes pulse-glow {
-          from { opacity: 0.7; text-shadow: 0 0 5px #00d2ff, 0 0 10px #00d2ff; }
-          to { opacity: 1; text-shadow: 0 0 10px #00d2ff, 0 0 20px #00a8ff, 0 0 40px #00a8ff; }
-        }
-      `}</style>
-      
       <div style={{ textAlign: 'center' }}>
-        {/* Grabs the image you already have saved in your public folder */}
+        {/* Targets your 'KH merch.png' asset inside your repository */}
         <img 
           src="/KH merch.png" 
           alt="KliqHub Logo" 
@@ -44,13 +37,13 @@ export default function ShopRedirectPage() {
           color: '#fff',
           fontWeight: 'bold',
           letterSpacing: '1px',
-          animation: 'pulse-glow 1.5s infinite alternate'
+          textShadow: '0 0 10px #00d2ff, 0 0 20px #00a8ff'
         }}>
           Taking you to our shop...
         </div>
         
         <a 
-          href="https://etsy.com" // <-- REPLACE WITH YOUR LIVE STORE URL
+          href="https://etsy.com" 
           style={{ marginTop: '30px', display: 'inline-block', color: '#00a8ff', textDecoration: 'none', fontSize: '14px', opacity: 0.8 }}
         >
           Click here if you aren't redirected
