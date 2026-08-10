@@ -1,6 +1,6 @@
 # ✨ Kliqhub 
 <p align="center">
-  <img src="KH Logo (1).png" alt="Kliqhub logo" width="440" />
+  <img src="KH Logo.png" alt="Kliqhub logo" width="440" />
 </p>
 **A free trust-layer scanner.** Drop in an email, domain, phone number, or image, and Kliqhub returns a 0–100 Trust Score built from real security signal, not guesswork.
 
