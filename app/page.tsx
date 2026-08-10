@@ -698,7 +698,11 @@ export default function Home() {
             About KliqHub
           </a>
         </div>
-      </div>
+     <div style={{ textAlign: 'center', padding: '40px 0', backgroundColor: '#0b0f19' }}>
+  <a href="/shop/index.html" style={{ color: '#00a8ff', textDecoration: 'none', fontWeight: 'bold', fontSize: '16px' }}>
+    Visit Our Shop
+  </a>
+</div> </div>
 
       <style jsx>{`
         .scan-sweep {
