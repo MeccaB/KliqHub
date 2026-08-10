@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Kliqhub — Trust Layer',
+  title: 'Kliqhub — Know Who You're Really Dealing With',
   description:
     'Calculate a real-time Trust Score for any email, domain, phone number, or image using free security intelligence APIs.',
   icons: {
