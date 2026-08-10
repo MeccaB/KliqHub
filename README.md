@@ -32,9 +32,9 @@ This keeps the app fast and keeps free-tier API usage low even under real traffi
 
 ## 🟢 Status
 
-🚀[Early build — live HERE](https://kliq-hub.vercel.app/)
+🚀[Early build — live HERE](https://kliqhub.com/)
 
-[Watch Our YouTube Channel, Your Shield Against Online Threats](https://youtube.com)
+[Watch Our YouTube Channel, Your Shield Against Online Threats]([https://youtube.com](https://youtu.be/qqfTEEgqREo?si=ug3fv9W-36Br4PtK))
 
 ## 🛠️ Installation & Setup
 
