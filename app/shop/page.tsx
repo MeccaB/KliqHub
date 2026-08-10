@@ -45,8 +45,7 @@ export default function ShopRedirectPage() {
           Taking you to our shop...
         </div>
 
-        
-           <a href={SHOP_URL} style={{ marginTop: '30px', display: 'inline-block', color: '#1F51FF', textDecoration: 'none', fontSize: '14px', opacity: 0.85 }}>Click here if you aren&apos;t redirected</a>
+        <a href={SHOP_URL} style={{ marginTop: '30px', display: 'inline-block', color: '#1F51FF', textDecoration: 'none', fontSize: '14px', opacity: 0.85 }}>Click here if you aren&apos;t redirected</a>
       </div>
     </div>
   );
