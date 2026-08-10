@@ -651,7 +651,9 @@ export default function Home() {
                 <span style={{ fontSize: '0.74rem', color: '#8B98A5' }}>
                   {result.source === 'cache' ? 'Served from cache' : 'Fresh live scan'} · {new Date(result.checkedAt).toLocaleString()}
                 </span>
-              </div>
+              <div style={{ textAlign: 'center', padding: '20px', backgroundColor: '#0b0f19' }}>
+    <a href="/shop" style={{ color: '#00a8ff', textDecoration: 'none' }}>Visit Our Shop</a>
+</div>
             </div>
 
             <div className="mt-8 flex flex-col gap-3">
