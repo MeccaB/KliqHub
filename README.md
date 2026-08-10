@@ -34,7 +34,7 @@ This keeps the app fast and keeps free-tier API usage low even under real traffi
 
 🚀[Early build — live HERE](https://kliqhub.com/)
 
-[Watch Our YouTube Channel](https://youtu.be/qqfTEEgqREo?si=ug3fv9W-36Br4PtK), Your Shield Against Online Threats
+📺 [Watch Our YouTube Channel](https://youtu.be/qqfTEEgqREo?si=ug3fv9W-36Br4PtK)
 
 ## 🛠️ Installation & Setup
 
