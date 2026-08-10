@@ -1,52 +1,55 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
+
+const SHOP_URL = '#';
 
 export default function ShopRedirectPage() {
   useEffect(() => {
+    if (SHOP_URL === '#') return;
     const redirectTimer = setTimeout(() => {
-      // FORWARD DESTINATION URL (Replace with your actual store link)
-      window.location.href = "https://etsy.com"; 
+      window.location.href = SHOP_URL;
     }, 3000);
-
     return () => clearTimeout(redirectTimer);
   }, []);
 
   return (
-    <div style={{
-      margin: 0,
-      height: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#0b0f19',
-      fontFamily: 'sans-serif',
-      overflow: 'hidden'
-    }}>
-      <div style={{ textAlign: 'center' }}>
-        {/* Targets your 'KH merch.png' asset inside your repository */}
-        <img 
-          src="/KH merch.png" 
-          alt="KliqHub Logo" 
-          style={{ maxWidth: '240px', height: 'auto', marginBottom: '30px', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} 
+    <div
+      style={{
+        margin: 0,
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#000000',
+        fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+      }}
+    >
+      <div style={{ textAlign: 'center', padding: '2rem' }}>
+        <img
+          src="/merch.png"
+          alt="Kliqhub merchandise preview"
+          style={{ maxWidth: '320px', width: '100%', height: 'auto', marginBottom: '30px', borderRadius: '12px' }}
         />
-        
-        <div style={{
-          fontSize: '24px',
-          color: '#fff',
-          fontWeight: 'bold',
-          letterSpacing: '1px',
-          textShadow: '0 0 10px #00d2ff, 0 0 20px #00a8ff'
-        }}>
+
+        <div
+          style={{
+            fontSize: '22px',
+            color: '#fff',
+            fontWeight: 700,
+            letterSpacing: '0.5px',
+            textShadow: '0 0 10px #1F51FF, 0 0 20px #1F51FF',
+          }}
+        >
           Taking you to our shop...
         </div>
+
         
-        <a 
-          href="https://etsy.com" 
-          style={{ marginTop: '30px', display: 'inline-block', color: '#00a8ff', textDecoration: 'none', fontSize: '14px', opacity: 0.8 }}
+          href={SHOP_URL}
+          style={{ marginTop: '30px', display: 'inline-block', color: '#1F51FF', textDecoration: 'none', fontSize: '14px', opacity: 0.85 }}
         >
-          Click here if you aren't redirected
+          Click here if you aren&apos;t redirected
         </a>
       </div>
     </div>
