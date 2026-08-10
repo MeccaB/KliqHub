@@ -2,16 +2,16 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Kliqhub — Know Who You're Really Dealing With',
+  title: "Kliqhub — Know Who You're Really Dealing With",
   description:
-    'Calculate a real-time Trust Score for any email, domain, phone number, or image using free security intelligence APIs.',
+    'Check any email, domain, phone number, or image in seconds. Kliqhub scores real security risk using live threat intelligence, so you know who and what you can actually trust online.',
   icons: {
     icon: '/logo.png',
   },
   openGraph: {
-    title: 'Kliqhub — Trust Layer',
+    title: "Kliqhub — Know Who You're Really Dealing With",
     description:
-      'Calculate a real-time Trust Score for any email, domain, phone number, or image using free security intelligence APIs.',
+      'Check any email, domain, phone number, or image in seconds. Kliqhub scores real security risk using live threat intelligence, so you know who and what you can actually trust online.',
     url: 'https://www.kliqhub.com',
     siteName: 'Kliqhub',
     images: [
@@ -26,9 +26,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary',
-    title: 'Kliqhub — Trust Layer',
+    title: "Kliqhub — Know Who You're Really Dealing With",
     description:
-      'Calculate a real-time Trust Score for any email, domain, phone number, or image using free security intelligence APIs.',
+      'Check any email, domain, phone number, or image in seconds. Kliqhub scores real security risk using live threat intelligence, so you know who and what you can actually trust online.',
     images: ['https://www.kliqhub.com/logo.png'],
   },
 };
