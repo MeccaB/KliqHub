@@ -475,7 +475,7 @@ export default function Home() {
 
       <div className="relative mx-auto flex max-w-3xl flex-col items-center px-6 pb-24 pt-16 sm:pt-24">
         <div className="mb-12 flex flex-col items-center text-center">
-          <img src="/logo.png" alt="Kliqhub logo" style={{ width: '72px', height: '72px', borderRadius: '16px', marginBottom: '1.25rem' }} />
+          <img src="/logo.png" alt="KliqHub logo" style={{ width: '72px', height: '72px', borderRadius: '16px', marginBottom: '1.25rem' }} />
           <div className="mb-4 flex items-center gap-2 rounded-full border px-3 py-1" style={{ borderColor: '#232D3A' }}>
             <span className="h-1.5 w-1.5 rounded-full" style={{ background: '#1F51FF', boxShadow: '0 0 8px #1F51FF' }} />
             <span className={'font-mono'} style={{ fontSize: '0.72rem', letterSpacing: '0.12em', color: '#8B98A5' }}>
