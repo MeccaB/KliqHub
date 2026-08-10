@@ -403,7 +403,7 @@ export default function Home() {
             </span>
           </div>
           <h1 className={'font-display'} style={{ fontSize: '2.6rem', fontWeight: 700, letterSpacing: '-0.02em' }}>
-            Kliqhub
+            KliqHub
           </h1>
           <p className="mt-3 max-w-md" style={{ color: '#8B98A5', fontSize: '0.98rem' }}>
             Point a free trust engine at anything, an email, a domain, a phone number, an image, and get back a Trust
@@ -581,7 +581,7 @@ export default function Home() {
           className="font-mono"
           style={{ marginTop: '3.5rem', fontSize: '0.78rem', color: '#8B98A5', textDecoration: 'none' }}
         >
-          About Kliqhub
+          About KliqHub
         </a>
       </div>
 
