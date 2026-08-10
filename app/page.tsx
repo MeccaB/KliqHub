@@ -692,10 +692,10 @@ export default function Home() {
 
         <div className="mt-4 flex items-center gap-4">
           <span className="font-mono" style={{ fontSize: '0.72rem', color: '#5A6472' }}>
-            © 2026 Kliqhub
+            © 2026 KliqHub
           </span>
           <a href="/about" className="font-mono" style={{ fontSize: '0.72rem', color: '#5A6472', textDecoration: 'none' }}>
-            About Kliqhub
+            About KliqHub
           </a>
         </div>
       </div>
