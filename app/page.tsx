@@ -154,6 +154,86 @@ function UploadIcon({ className, style }: { className?: string; style?: React.CS
   );
 }
 
+function FacebookIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <path
+        d="M15 8.5h2V5.5h-2c-2.2 0-4 1.8-4 4V12H9v3h2v6h3v-6h2.3l.7-3H14v-2.2c0-.7.3-1.3 1-1.3z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke="currentColor" strokeWidth="1.4" />
+      <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.4" />
+      <circle cx="17" cy="7" r="1" fill="currentColor" />
+    </svg>
+  );
+}
+
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <path d="M4.5 4.5l15 15M19.5 4.5l-15 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function LinkedInIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <rect x="3.5" y="3.5" width="17" height="17" rx="3" stroke="currentColor" strokeWidth="1.4" />
+      <line x1="7.5" y1="10" x2="7.5" y2="17" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      <circle cx="7.5" cy="7" r="1" fill="currentColor" />
+      <path d="M11.5 17v-4.5c0-1.4 1-2.5 2.5-2.5s2.5 1.1 2.5 2.5V17" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      <line x1="11.5" y1="10" x2="11.5" y2="17" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function YoutubeIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <rect x="3" y="6" width="18" height="12" rx="3" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M10.5 9.5l5 2.5-5 2.5z" fill="currentColor" />
+    </svg>
+  );
+}
+
+function TiktokIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <path
+        d="M13 3v10.8a2.7 2.7 0 11-2.2-2.65"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M13 3c.3 2.2 2 3.9 4.2 4.1"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+const SOCIAL_LINKS: { label: string; url: string; icon: (props: { className?: string }) => JSX.Element }[] = [
+  { label: 'Facebook', url: 'https://www.facebook.com/KLIQHUB', icon: FacebookIcon },
+  { label: 'Instagram', url: 'https://www.instagram.com/kliqhub/', icon: InstagramIcon },
+  { label: 'X', url: 'https://x.com/Kliq_Hub', icon: XIcon },
+  { label: 'LinkedIn', url: 'https://www.linkedin.com/company/101115191', icon: LinkedInIcon },
+  { label: 'YouTube', url: 'https://www.youtube.com/channel/UClj9rPDU7t4FouvrstJ6EEg', icon: YoutubeIcon },
+  { label: 'TikTok', url: 'https://www.tiktok.com/@kliqhub', icon: TiktokIcon },
+];
+
 function FlagIcon({ severity, className }: { severity: FlagSeverity; className?: string }) {
   if (severity === 'positive') return <CheckCircleIcon className={className} />;
   if (severity === 'warning') return <AlertTriangleIcon className={className} />;
@@ -381,7 +461,7 @@ export default function Home() {
       setResult(data as TrustResult);
     } catch (error) {
       console.error('Trust check request failed', error);
-      setErrorMessage('Could not reach the KliqHub scanning service. Please try again.');
+      setErrorMessage('Could not reach the Kliqhub scanning service. Please try again.');
     } finally {
       setIsScanning(false);
     }
@@ -395,7 +475,7 @@ export default function Home() {
 
       <div className="relative mx-auto flex max-w-3xl flex-col items-center px-6 pb-24 pt-16 sm:pt-24">
         <div className="mb-12 flex flex-col items-center text-center">
-          <img src="/logo.png" alt="KliqHub logo" style={{ width: '72px', height: '72px', borderRadius: '16px', marginBottom: '1.25rem' }} />
+          <img src="/logo.png" alt="Kliqhub logo" style={{ width: '72px', height: '72px', borderRadius: '16px', marginBottom: '1.25rem' }} />
           <div className="mb-4 flex items-center gap-2 rounded-full border px-3 py-1" style={{ borderColor: '#232D3A' }}>
             <span className="h-1.5 w-1.5 rounded-full" style={{ background: '#1F51FF', boxShadow: '0 0 8px #1F51FF' }} />
             <span className={'font-mono'} style={{ fontSize: '0.72rem', letterSpacing: '0.12em', color: '#8B98A5' }}>
@@ -403,7 +483,7 @@ export default function Home() {
             </span>
           </div>
           <h1 className={'font-display'} style={{ fontSize: '2.6rem', fontWeight: 700, letterSpacing: '-0.02em' }}>
-            KliqHub
+            Kliqhub
           </h1>
           <p className="mt-3 max-w-md" style={{ color: '#8B98A5', fontSize: '0.98rem' }}>
             Point a free trust engine at anything, an email, a domain, a phone number, an image, and get back a Trust
@@ -528,6 +608,22 @@ export default function Home() {
           )}
         </div>
 
+        <a
+          href="/business"
+          className="font-mono"
+          style={{
+            marginTop: '2rem',
+            fontSize: '0.78rem',
+            color: '#1F51FF',
+            textDecoration: 'none',
+            border: '1px solid #22284a',
+            borderRadius: '0.5rem',
+            padding: '0.5rem 1rem',
+          }}
+        >
+          For Business & API Access →
+        </a>
+
         {errorMessage && (
           <div className="mt-6 w-full rounded-xl border px-4 py-3" style={{ borderColor: 'rgba(239,68,68,0.4)', background: 'rgba(239,68,68,0.08)' }}>
             <p style={{ color: '#F87171', fontSize: '0.88rem' }}>{errorMessage}</p>
@@ -576,13 +672,32 @@ export default function Home() {
           </div>
         )}
 
-        <a
-          href="/about"
-          className="font-mono"
-          style={{ marginTop: '3.5rem', fontSize: '0.78rem', color: '#8B98A5', textDecoration: 'none' }}
-        >
-          About KliqHub
-        </a>
+        <div className="mt-14 flex items-center gap-5">
+          {SOCIAL_LINKS.map((social) => {
+            const SocialIcon = social.icon;
+            return (
+              <a
+                key={social.label}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={social.label}
+                style={{ color: '#8B98A5' }}
+              >
+                <SocialIcon className="h-[18px] w-[18px]" />
+              </a>
+            );
+          })}
+        </div>
+
+        <div className="mt-4 flex items-center gap-4">
+          <span className="font-mono" style={{ fontSize: '0.72rem', color: '#5A6472' }}>
+            © 2026 Kliqhub
+          </span>
+          <a href="/about" className="font-mono" style={{ fontSize: '0.72rem', color: '#5A6472', textDecoration: 'none' }}>
+            About Kliqhub
+          </a>
+        </div>
       </div>
 
       <style jsx>{`
