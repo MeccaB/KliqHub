@@ -702,7 +702,7 @@ export default function Home() {
   <a href="/shop/index.html" style={{ color: '#00a8ff', textDecoration: 'none', fontWeight: 'bold', fontSize: '16px' }}>
     Visit Our Shop
   </a>
-</div> </div>
+</div>
 
       <style jsx>{`
         .scan-sweep {
