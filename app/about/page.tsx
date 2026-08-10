@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About Kliqhub',
+  title: 'About KliqHub',
   description: 'Trust intelligence APIs for fintech, email service providers, and digital marketplaces.',
 };
 
@@ -16,7 +16,7 @@ export default function AboutPage() {
         <img src="/logo.png" alt="Kliqhub logo" style={{ width: '64px', height: '64px', borderRadius: '14px', marginTop: '2rem', marginBottom: '1.5rem' }} />
 
         <h1 style={{ fontSize: '2rem', fontWeight: 700, letterSpacing: '-0.02em', margin: 0 }}>
-          About Kliqhub
+          About KliqHub
         </h1>
 
         {/*
@@ -24,12 +24,12 @@ export default function AboutPage() {
           Everything above and below this comment is just layout and styling.
         */}
         <p style={{ fontSize: '1rem', color: '#8B98A5', marginTop: '1.5rem', lineHeight: 1.8 }}>
-          Kliqhub is a free trust-layer scanner. Drop in an email, domain, phone number, or image, and get back
+          KliqHub is a free trust-layer scanner. Drop in an email, domain, phone number, or image, and get back
           a real-time Trust Score built from live security signal, not guesswork.
         </p>
 
         <p style={{ fontSize: '1rem', color: '#8B98A5', marginTop: '1.25rem', lineHeight: 1.8 }}>
-          We built Kliqhub because verifying who and what you're dealing with online shouldn't require a dozen
+          We built KliqHub because verifying who and what you're dealing with online shouldn't require a dozen
           different tools. One check, one score, one clear answer.
         </p>
 
