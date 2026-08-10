@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Kliqhub for Business',
+  title: 'KliqHub for Business',
   description: 'The trust layer for fintech, email service providers, and digital marketplaces.',
 };
 
@@ -61,7 +61,7 @@ export default function BusinessPage() {
         </p>
 
         <h2 style={{ fontSize: '1.3rem', fontWeight: 600, marginTop: '3rem', marginBottom: '1.5rem' }}>
-          Why Businesses Choose Kliqhub
+          Why Businesses Choose KliqHub
         </h2>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
