@@ -13,6 +13,21 @@ export default function Footer() {
       }}
     >
       <nav style={{ display: 'inline-flex', alignItems: 'center', gap: '12px' }}>
+        <span style={{ fontFamily: 'sans-serif', fontSize: '14px', color: '#5A6472' }}>© 2026 Kliqhub</span>
+
+        <Link
+          href="/about"
+          style={{
+            color: '#8B98A5',
+            textDecoration: 'none',
+            fontFamily: 'sans-serif',
+            fontSize: '14px',
+            padding: '6px 8px',
+          }}
+        >
+          About
+        </Link>
+
         <Link
           href="/shop"
           style={{
