@@ -1,23 +1,17 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-type TabType = 'email' | 'domain' | 'phone' | 'image';
-type FlagSeverity = 'positive' | 'warning' | 'critical';
+import React from 'react';
 
-interface Flag {
-  severity: FlagSeverity;
-  label: string;
-  detail: string;
-}
-
-interface TrustResult {
-  type: TabType;
-  value: string;
-  hash?: string;
-  score: number;
-  flags: Flag[];
-  source: 'cache' | 'live';
-  checkedAt: string;
+export default function AboutPage() {
+  return (
+    <main style={{ background: '#000000', color: '#E6EDF3', minHeight: '100vh', width: '100%', fontFamily: 'ui-sans-serif, system-ui, sans-serif' }}>
+      <div style={{ maxWidth: '40rem', margin: '0 auto', padding: '4rem 1.5rem' }}>
+        <a href="/" style={{ fontSize: '0.8rem', color: '#8B98A5', textDecoration: 'none' }}>
+          ← Back to the trust scanner
+        </a>
+      </div>
+    </main>
+  );
 }
 
 interface ScoreBand {
