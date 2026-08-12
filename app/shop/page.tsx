@@ -20,7 +20,7 @@ export default function ShopPage() {
     >
       <div style={{ textAlign: 'center', maxWidth: '880px' }}>
         <img
-          src="/merch.png"
+          src="/KH merch.png"
           alt="KliqHub merch preview"
           style={{ maxWidth: '880px', width: '100%', height: 'auto', marginBottom: '24px', borderRadius: '12px' }}
         />
