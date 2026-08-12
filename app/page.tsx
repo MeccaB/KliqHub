@@ -695,7 +695,7 @@ export default function Home() {
             © 2026 Kliqhub
           </span>
           <a href="/about" className="font-mono" style={{ fontSize: '0.72rem', color: '#5A6472', textDecoration: 'none' }}>
-            About Kliqhub
+            About KliqHub
           </a>
           <a href="/shop" className="font-mono" style={{ fontSize: '0.72rem', color: '#5A6472', textDecoration: 'none' }}>
             Shop
