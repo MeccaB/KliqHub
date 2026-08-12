@@ -22,20 +22,56 @@ export default function ShopPage() {
         <img
           src="/merch.png"
           alt="KliqHub merch preview"
-          style={{ maxWidth: '880px', width: '100%', height: 'auto', marginBottom: '24px', borderRadius: '12px' }}
+          style={{
+            maxWidth: '880px',
+            width: '100%',
+            height: 'auto',
+            marginBottom: '24px',
+            borderRadius: '12px',
+          }}
         />
 
-        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.5rem', color: '#E6EDF3' }}>KliqHub Merch</h2>
-        h2>KliqHub Official Merch</h2>
-<p>Shop premium Proof of Trust apparel and gear that lets you wear the mission of safer online interactions. Every piece supports the KliqHub community and our Zero Trust Oracle technology.</p>
-<ul>
-  <li>Proof of Trust Hoodies with Trust Score badge</li>
-  <li>Zero Trust Oracle T-Shirts</li>
-  <li>Community Consensus Caps</li>
-  <li>Anti-Scam Stickers & Laptop Decals</li>
-  <li>Limited-Edition PeerSale Crewnecks</li>
-</ul>
-      </div>
-    </div>
-  );
-}
+        <h2
+          style={{
+            fontSize: '1.25rem',
+            fontWeight: 700,
+            marginBottom: '0.75rem',
+            color: '#E6EDF3',
+          }}
+        >
+          KliqHub Official Merch
+        </h2>
+
+        <p
+          style={{
+            fontSize: '1rem',
+            lineHeight: 1.6,
+            marginBottom: '1.5rem',
+            color: '#E6EDF3',
+            opacity: 0.9,
+          }}
+        >
+          Shop premium Proof of Trust apparel and gear that lets you wear the
+          mission of safer online interactions. Every piece supports the
+          KliqHub community and our Zero Trust Oracle technology.
+        </p>
+
+        <ul
+          style={{
+            listStyle: 'none',
+            padding: 0,
+            margin: 0,
+            textAlign: 'left',
+            display: 'inline-block',
+          }}
+        >
+          <li style={{ marginBottom: '0.6rem' }}>
+            • Proof of Trust Hoodies with Trust Score badge
+          </li>
+          <li style={{ marginBottom: '0.6rem' }}>
+            • Zero Trust Oracle T-Shirts
+          </li>
+          <li style={{ marginBottom: '0.6rem' }}>
+            • Community Consensus Caps
+          </li>
+          <
