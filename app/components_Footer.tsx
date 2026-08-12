@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 
 export default function Footer() {
   return (
@@ -10,19 +9,7 @@ export default function Footer() {
       borderTop: '1px solid #1e293b',
       width: '100%'
     }}>
-      <a 
-        href="/shop"
-        style={{ 
-          color: '#00a8ff', 
-          textDecoration: 'none', 
-          fontFamily: 'sans-serif', 
-          fontSize: '16px', 
-          fontWeight: 'bold',
-          letterSpacing: '0.5px'
-        }}
-      >
-        Visit Our Shop
-      </a>
+      <span style={{ color: '#5A6472', fontSize: '0.72rem' }}>© 2026 Kliqhub</span>
     </footer>
   );
 }
