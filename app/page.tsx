@@ -33,7 +33,7 @@ const SCORE_BANDS: ScoreBand[] = [
   { min: 30, max: 49, color: '#FB923C', glow: 'rgba(251,146,60,0.35)', label: 'Poor' },
   { min: 50, max: 69, color: '#F5C044', glow: 'rgba(245,192,68,0.35)', label: 'Fair' },
   { min: 70, max: 89, color: '#34D399', glow: 'rgba(52,211,153,0.35)', label: 'Good' },
-  { min: 90, max: 100, color: '#1F51FF', glow: 'rgba(34,211,238,0.35)', label: 'Excellent' },
+  { min: 90, max: 100, color: '#0080FE', glow: 'rgba(0,128,254,0.35)', label: 'Excellent' },
 ];
 
 const GAUGE_START_ANGLE = -120;
@@ -477,7 +477,7 @@ export default function Home() {
         <div className="mb-12 flex flex-col items-center text-center">
           <img src="/logo.png" alt="Kliqhub logo" style={{ width: '72px', height: '72px', borderRadius: '16px', marginBottom: '1.25rem' }} />
           <div className="mb-4 flex items-center gap-2 rounded-full border px-3 py-1" style={{ borderColor: '#232D3A' }}>
-            <span className="h-1.5 w-1.5 rounded-full" style={{ background: '#1F51FF', boxShadow: '0 0 8px #1F51FF' }} />
+            <span className="h-1.5 w-1.5 rounded-full" style={{ background: '#0080FE', boxShadow: '0 0 8px #0080FE' }} />
             <span className={'font-mono'} style={{ fontSize: '0.72rem', letterSpacing: '0.12em', color: '#8B98A5' }}>
               TRUST LAYER · LIVE SCANNER
             </span>
@@ -506,7 +506,7 @@ export default function Home() {
                   className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 transition-all duration-200"
                   style={{
                     background: isActive ? '#1A222C' : 'transparent',
-                    color: isActive ? '#1F51FF' : '#8B98A5',
+                    color: isActive ? '#0080FE' : '#8B98A5',
                     boxShadow: isActive ? 'inset 0 0 0 1px #2A3644' : 'none',
                   }}
                 >
@@ -534,7 +534,7 @@ export default function Home() {
                   onClick={handleSubmit}
                   disabled={!canSubmit || isScanning}
                   className="shrink-0 rounded-xl px-6 py-3.5 font-medium transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40"
-                  style={{ background: '#1F51FF', color: '#000000' }}
+                  style={{ background: '#0080FE', color: '#000000' }}
                 >
                   {isScanning ? 'Scanning…' : 'Run Scan'}
                 </button>
@@ -551,8 +551,8 @@ export default function Home() {
                   onClick={() => fileInputRef.current?.click()}
                   className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border border-dashed px-6 py-10 text-center transition-colors duration-200"
                   style={{
-                    borderColor: isDraggingOver ? '#1F51FF' : '#232D3A',
-                    background: isDraggingOver ? 'rgba(34,211,238,0.05)' : 'transparent',
+                    borderColor: isDraggingOver ? '#0080FE' : '#232D3A',
+                    background: isDraggingOver ? 'rgba(0,128,254,0.05)' : 'transparent',
                   }}
                 >
                   <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileInputChange} className="hidden" />
@@ -582,7 +582,7 @@ export default function Home() {
                       </span>
                     </div>
                     {imageHash && !isHashing && (
-                      <button onClick={handleCopyHash} className="shrink-0 pl-3" style={{ color: '#1F51FF', fontSize: '0.75rem' }}>
+                      <button onClick={handleCopyHash} className="shrink-0 pl-3" style={{ color: '#0080FE', fontSize: '0.75rem' }}>
                         {copied ? 'Copied' : 'Copy'}
                       </button>
                     )}
@@ -593,7 +593,7 @@ export default function Home() {
                   onClick={handleSubmit}
                   disabled={!canSubmit || isScanning}
                   className="rounded-xl px-6 py-3.5 font-medium transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40"
-                  style={{ background: '#1F51FF', color: '#000000' }}
+                  style={{ background: '#0080FE', color: '#000000' }}
                 >
                   {isScanning ? 'Scanning…' : 'Run Scan'}
                 </button>
@@ -603,7 +603,7 @@ export default function Home() {
 
           {isScanning && (
             <div className="relative mx-5 mb-5 h-1 overflow-hidden rounded-full" style={{ background: '#1A222C' }}>
-              <div className="scan-sweep absolute inset-y-0 w-1/3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #1F51FF, transparent)' }} />
+              <div className="scan-sweep absolute inset-y-0 w-1/3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #0080FE, transparent)' }} />
             </div>
           )}
         </div>
@@ -614,7 +614,7 @@ export default function Home() {
           style={{
             marginTop: '2rem',
             fontSize: '0.78rem',
-            color: '#1F51FF',
+            color: '#0080FE',
             textDecoration: 'none',
             border: '1px solid #22284a',
             borderRadius: '0.5rem',
