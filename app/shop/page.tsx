@@ -1,50 +1,53 @@
 'use client';
 
-import { useEffect } from 'react';
+import React from 'react';
 
-const SHOP_URL = '#';
+const SHOP_URL = 'https://etsy.com';
 
-export default function ShopRedirectPage() {
-  useEffect(() => {
-    if (SHOP_URL === '#') return;
-    const redirectTimer = setTimeout(() => {
-      window.location.href = SHOP_URL;
-    }, 3000);
-    return () => clearTimeout(redirectTimer);
-  }, []);
-
+export default function ShopPage() {
   return (
-    <div
+    <main
       style={{
-        margin: 0,
         minHeight: '100vh',
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#000000',
+        justifyContent: 'center',
+        background: '#000000',
+        color: '#E6EDF3',
+        width: '100%',
         fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+        padding: '3rem',
       }}
     >
-      <div style={{ textAlign: 'center', padding: '2rem' }}>
+      <div style={{ textAlign: 'center', maxWidth: '720px', width: '100%' }}>
         <img
           src="/merch.png"
           alt="Kliqhub merchandise preview"
-          style={{ maxWidth: '320px', width: '100%', height: 'auto', marginBottom: '30px', borderRadius: '12px' }}
+          style={{ maxWidth: '420px', width: '100%', height: 'auto', margin: '0 auto 24px', borderRadius: '12px' }}
         />
-        <div
+
+        <h1 style={{ fontSize: '1.75rem', margin: '0 0 8px', fontWeight: 700 }}>Kliqhub Merch</h1>
+        <p style={{ color: '#8B98A5', margin: '0 0 18px' }}>
+          Browse our curated merch — shirts, stickers, and more. Click below to visit our shop.
+        </p>
+
+        <a
+          href={SHOP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
-            fontSize: '22px',
+            display: 'inline-block',
+            background: '#1F51FF',
             color: '#fff',
+            padding: '10px 18px',
+            borderRadius: '8px',
+            textDecoration: 'none',
             fontWeight: 700,
-            letterSpacing: '0.5px',
-            textShadow: '0 0 10px #1F51FF, 0 0 20px #1F51FF',
           }}
         >
-          Taking you to our shop...
-        </div>
-        <a href={SHOP_URL} style={{ marginTop: '30px', display: 'inline-block', color: '#1F51FF', textDecoration: 'none', fontSize: '14px', opacity: 0.85 }}>Click here if you aren&apos;t redirected</a>
+          Open Shop
+        </a>
       </div>
-    </div>
+    </main>
   );
 }
