@@ -461,7 +461,7 @@ export default function Home() {
       setResult(data as TrustResult);
     } catch (error) {
       console.error('Trust check request failed', error);
-      setErrorMessage('Could not reach the Kliqhub scanning service. Please try again.');
+      setErrorMessage('Could not reach the KliqHub scanning service. Please try again.');
     } finally {
       setIsScanning(false);
     }
@@ -483,7 +483,7 @@ export default function Home() {
             </span>
           </div>
           <h1 className={'font-display'} style={{ fontSize: '2.6rem', fontWeight: 700, letterSpacing: '-0.02em' }}>
-            Kliqhub
+            KliqHub
           </h1>
           <p className="mt-3 max-w-md" style={{ color: '#8B98A5', fontSize: '0.98rem' }}>
             Point a free trust engine at anything, an email, a domain, a phone number, an image, and get back a Trust
