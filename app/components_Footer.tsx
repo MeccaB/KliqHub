@@ -10,8 +10,8 @@ export default function Footer() {
       borderTop: '1px solid #1e293b',
       width: '100%'
     }}>
-      <Link 
-        href="/shop" 
+      <a 
+        href="/shop"
         style={{ 
           color: '#00a8ff', 
           textDecoration: 'none', 
@@ -22,7 +22,7 @@ export default function Footer() {
         }}
       >
         Visit Our Shop
-      </Link>
+      </a>
     </footer>
   );
 }
