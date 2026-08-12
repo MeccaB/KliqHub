@@ -1,18 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
+import React from 'react';
 
-const SHOP_URL = '#';
-
-export default function ShopRedirectPage() {
-  useEffect(() => {
-    if (SHOP_URL === '#') return;
-    const redirectTimer = setTimeout(() => {
-      window.location.href = SHOP_URL;
-    }, 3000);
-    return () => clearTimeout(redirectTimer);
-  }, []);
-
+export default function ShopPage() {
   return (
     <div
       style={{
@@ -24,26 +14,23 @@ export default function ShopRedirectPage() {
         alignItems: 'center',
         backgroundColor: '#000000',
         fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+        color: '#E6EDF3',
+        padding: '3rem',
       }}
     >
-      <div style={{ textAlign: 'center', padding: '2rem' }}>
+      <div style={{ textAlign: 'center', maxWidth: '880px' }}>
         <img
           src="/merch.png"
-          alt="Kliqhub merchandise preview"
-          style={{ maxWidth: '320px', width: '100%', height: 'auto', marginBottom: '30px', borderRadius: '12px' }}
+          alt="KliqHub merch preview"
+          style={{ maxWidth: '880px', width: '100%', height: 'auto', marginBottom: '24px', borderRadius: '12px' }}
         />
-        <div
-          style={{
-            fontSize: '22px',
-            color: '#fff',
-            fontWeight: 700,
-            letterSpacing: '0.5px',
-            textShadow: '0 0 10px #1F51FF, 0 0 20px #1F51FF',
-          }}
-        >
-          Taking you to our shop...
-        </div>
-        <a href={SHOP_URL} style={{ marginTop: '30px', display: 'inline-block', color: '#1F51FF', textDecoration: 'none', fontSize: '14px', opacity: 0.85 }}>Click here if you aren&apos;t redirected</a>
+
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.5rem', color: '#E6EDF3' }}>KliqHub Merch</h2>
+        <p style={{ color: '#8B98A5', fontSize: '1rem', lineHeight: 1.6 }}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus
+          diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed
+          augue semper porta. Mauris massa.
+        </p>
       </div>
     </div>
   );
