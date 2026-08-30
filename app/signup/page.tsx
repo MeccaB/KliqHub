@@ -1,0 +1,2 @@
+import { Shell } from '@/components/SiteShell';
+export default function Page(){return <Shell><main className="container page" style={{maxWidth:760}}><span className="eyebrow">My Two Cents</span><h1 style={{fontSize:48}}>Join My Two Cents</h1><div className="panel"><p>Create an account to review, vote, and connect with your community.</p><p className="muted">This protected workflow is ready to connect to Auth.js, the database, and verification services using environment variables.</p><button className="btn">Continue</button></div></main></Shell>}
