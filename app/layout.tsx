@@ -1,21 +1,14 @@
-import React from 'react';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import Footer from './components/Footer';
+import { PwaRegister } from '@/components/PwaRegister';
 
-export default function RootLayout({ children }: { children: React.ReactNode }) { 
-  return ( 
-    <html lang="en"> 
-      <body style={{ margin: 0, padding: 0, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        
-        {/* Main Content Area */}
-        <main style={{ flex: 1 }}>
-          {children}
-        </main>
-        
-        {/* Site footer component */}
-        <Footer />
+export const metadata: Metadata = {
+  title: 'My Two Cents | Real opinions. Better choices.',
+  description: 'A community-powered guide to local businesses.',
+  manifest: '/manifest.json',
+};
+export const viewport: Viewport = { themeColor: '#f97316' };
 
-      </body> 
-    </html> 
-  );
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return <html lang="en"><body><PwaRegister />{children}</body></html>;
 }

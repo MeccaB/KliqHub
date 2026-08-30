@@ -1,0 +1,1 @@
+import { Shell } from '@/components/SiteShell';import { AuthForm } from '@/components/AuthForm';export default function Page(){return <Shell><main className="container page" style={{maxWidth:520}}><span className="eyebrow">My Two Cents</span><h1 style={{fontSize:48}}>Welcome back</h1><AuthForm/></main></Shell>}

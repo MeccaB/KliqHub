@@ -1,56 +1,22 @@
-# ✨ Kliqhub 
-<p align="center">
-  <img src="kh logo.jpg" alt="Kliqhub logo" width="440" />
-</p>
-**A free trust-layer scanner.** Drop in an email, domain, phone number, or image, and Kliqhub returns a 0–100 Trust Score built from real security signal, not guesswork.
+# My Two Cents
 
-## 🔎 What it does
+A Next.js App Router foundation for a nationwide, community-powered business review platform.
 
-Kliqhub checks what you give it against live threat intelligence and tells you how much to trust it:
+## Included
+- Responsive business discovery, profile, review, search, and workflow scaffold
+- PWA manifest and service worker
+- Typed domain model in `db/schema.ts` for users, businesses, reviews, votes, moderation, and owner responses
+- Clear seams for Auth.js, a Neon Marketplace Postgres database, Vercel Blob uploads, server-side pagination, and rate limiting
 
-- **Email** — checked against Have I Been Pwned for known data breaches and public pastes
-- **Domain** — checked against VirusTotal's security vendor network and community reputation data
-- **Phone** — validated against international format standards and known spam/spoofing patterns
-- **Image** — fingerprinted locally with SHA-256 and checked against VirusTotal's malware database, without ever uploading the file itself
+## Production wiring next
+1. Provision **Neon via the Vercel Marketplace**. Vercel Postgres is no longer first-party; it was migrated to Neon in December 2024.
+2. Add `DATABASE_URL`, `AUTH_SECRET`, Google/Apple provider credentials, and Blob credentials in Vercel environment variables.
+3. Replace `lib/sample-data.ts` reads with Drizzle queries and protect write routes with Auth.js sessions and rate limits.
+4. Add a PWA icon set before release.
 
-Every score is built with a transparent point-deduction engine — no black box, just a running list of exactly what raised or lowered the score.
+## Supabase setup
+1. Create a Supabase project and run `supabase/migrations/001_my_two_cents.sql` in its SQL editor.
+2. Set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` in Vercel. The service role key must never be exposed to the browser.
+3. Configure Google and Apple in Supabase Auth, then add their redirect URL for your Vercel domain.
 
-## 🤖 How it works 
-
-1. You submit a value.
-2. Kliqhub checks Supabase first — if this exact value was scanned recently, you get an instant cached result.
-3. On a cache miss, it calls the relevant free security API live, scores the result, caches it, and returns it.
-
-This keeps the app fast and keeps free-tier API usage low even under real traffic.
-
-## 💼 Tech stack 
-
-- **Next.js 14** (App Router) + TypeScript
-- **Tailwind CSS** for styling
-- **Supabase** for caching
-- **VirusTotal API** and **Have I Been Pwned API** for security intelligence
-
-## 🟢 Status
-
-🚀[Early build — live HERE](https://kliqhub.com/)
-
-📺 [Watch Our YouTube Channel](https://youtu.be/qqfTEEgqREo?si=ug3fv9W-36Br4PtK)
-
-## 🛠️ Installation & Setup
-
-Follow these steps to run the project locally:
-
-1.  **Clone the repository**
-    ```bash
-    git clone https://github.com
-    cd kliqhub
-    ```
-
-2.  **Install dependencies**
-    ```bash
-    npm install
-    ```
-
-3.  **Run the development server**
-    ```bash
-    npm run dev
+The app uses Supabase Auth email/password immediately; OAuth provider buttons can be added after those provider settings are active.
